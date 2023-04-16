@@ -25,6 +25,12 @@ def num_eights(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    if n % 10 == 8:
+        return 1 + num_eights(n // 10)
+    elif n < 10:
+        return 0
+    else:
+        return num_eights(n // 10)
 
 
 def pingpong(n):
@@ -61,6 +67,20 @@ def pingpong(n):
     True
     """
     "*** YOUR CODE HERE ***"
+
+    def judge(n):
+        if n <= 8:
+            return n
+        else:
+            return direction(n)+judge(n-1)
+
+    def direction(n):
+        if n <= 8:
+            return 1
+        elif (n-1) % 8 == 0 or num_eights(n-1) > 0:
+            return -1*direction(n-1)
+        return direction(n-1)
+    return judge(n)
 
 
 def next_larger_coin(coin):
@@ -117,3 +137,15 @@ def count_coins(change):
     True
     """
     "*** YOUR CODE HERE ***"
+
+    def count(change, smallest_coin):
+        if change == 0:
+            return 1
+        if change < 0:
+            return 0
+        if smallest_coin == None:
+            return 0
+        without_coin = count(change, next_larger_coin(smallest_coin))
+        with_coin = count(change-smallest_coin, smallest_coin)
+        return with_coin+without_coin
+    return count(change, 1)
